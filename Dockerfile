@@ -4,18 +4,12 @@ ENV ACTIVEMQ_VERSION 5.14.5
 ENV ACTIVEMQ apache-activemq-$ACTIVEMQ_VERSION
 ENV ACTIVEMQ_TCP=61616 ACTIVEMQ_AMQP=5672 ACTIVEMQ_STOMP=61613 ACTIVEMQ_MQTT=1883 ACTIVEMQ_WS=61614 ACTIVEMQ_UI=8161
 
-ENV ACTIVEMQ_HOME /opt/activemq
+ENV ACTIVEMQ_HOME /app/apache-activemq-5.14.5
+WORKDIR /app
 
 RUN set -x && \
-    curl -s -S https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz | tar xvz -C /opt && \
-    ln -s /opt/$ACTIVEMQ $ACTIVEMQ_HOME && \
-    useradd -r -M -d $ACTIVEMQ_HOME activemq && \
-    chown -R activemq:activemq /opt/$ACTIVEMQ && \
-    chown -h activemq:activemq $ACTIVEMQ_HOME
+    curl -s -S https://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz | tar xvz -C /app 
 
-USER activemq
-
-WORKDIR $ACTIVEMQ_HOME
 EXPOSE $ACTIVEMQ_TCP $ACTIVEMQ_AMQP $ACTIVEMQ_STOMP $ACTIVEMQ_MQTT $ACTIVEMQ_WS $ACTIVEMQ_UI
 
-CMD ["/bin/sh", "-c", "bin/activemq console"]
+CMD ["/bin/sh", "-c", "echo 'hello kambiz'; pwd; ls -al; cd apache-activemq-5.14.5/bin; ls -al; ./activemq console  "]
